@@ -9,6 +9,7 @@ dotenv.config();
 // Utiliser 'development' par défaut si NODE_ENV n'est pas défini
 const isProduction = process.env.NODE_ENV === 'production';
 
+const conectionString = process.env.DATABASE_URL
 // Configuration de l'objet SSL
 const sslConfig = isProduction ? {
     // Si en production, active l'SSL et accepte les certificats auto-signés
@@ -18,13 +19,7 @@ const sslConfig = isProduction ? {
 
 // Configuration du pool de connexions PostgreSQL
 const pool = new Pool({
-    host: process.env.PG_HOST,
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
-    port: process.env.PG_PORT || 5432, 
-    // 💡 APPLICATION DE LA CONFIGURATION SSL CONDITIONNELLE
-    ssl: sslConfig
+    connectionString: connectionString
 });
 
 // Tester la connexion (optionnel mais recommandé)
