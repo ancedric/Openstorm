@@ -10,7 +10,8 @@
     "frontend:build": "cd frontend && npm run build",
     "electron:dev": "cross-env ELECTRON_DEV=true concurrently \"npm:backend:dev\" \"npm:frontend:dev\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:start": "cross-env ELECTRON_DEV=false electron .",
-    "electron:build": "npm run frontend:build && electron-builder --linux --armv7l --arm64"
+    "electron:build": "npm run frontend:build && electron-builder --linux --armv7l --arm64",
+    "electron:build:win": "npm run frontend:build && electron-builder --win --x64 --ia32"
   },
   "dependencies": {},
   "devDependencies": {
