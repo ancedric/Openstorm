@@ -1,13 +1,22 @@
 {
-  "name": "react",
+  "name": "openstorm",
+  "version": "1.0.0",
+  "description": "Application de gestion des ventes",
+  "main": "public/electron.js",
+  "homepage": "./",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "vite",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-build": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win --publish=never",
+    "dist:linux": "npm run build && electron-builder --linux --publish=never",
+    "dist:all": "npm run build && electron-builder -mwl --publish=never"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -30,12 +39,59 @@
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^latest",
+    "electron-builder": "^latest",
     "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "concurrently": "^8.2.1",
+    "wait-on": "^7.0.1",
     "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
     "vite": "^5.0.8"
+  },
+  "build": {
+    "appId": "com.openstorm.app",
+    "productName": "Openstorm",
+    "files": [
+      "build/**/*",
+      "public/electron.js"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    },
+    "appImage": {
+      "artifactName": "${productName}-${version}.${ext}"
+    }
   }
 }
