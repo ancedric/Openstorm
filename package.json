@@ -1,41 +1,38 @@
 {
-  "name": "react",
+  "name": "openstorm-electron",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "main": "electron/main.js",
   "scripts": {
-    "dev": "vite",
-    "build": "react-scripts build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "backend:dev": "cd backend && nodemon server.js",
+    "frontend:install": "cd frontend && npm install",
+    "frontend:dev": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
+    "electron:dev": "cross-env ELECTRON_DEV=true concurrently \"npm:backend:dev\" \"npm:frontend:dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:start": "cross-env ELECTRON_DEV=false electron .",
+    "electron:build": "npm run frontend:build && electron-builder --linux --armv7l --arm64"
   },
-  "dependencies": {
-    "@auth0/auth0-react": "^2.2.4",
-    "axios": "^1.6.8",
-    "browserslist": "^4.23.0",
-    "chart.js": "^4.4.2",
-    "js-cookie": "^3.0.5",
-    "liqvid": "^2.1.9",
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
-    "react-dropzone": "^14.2.3",
-    "react-hook-form": "^7.51.1",
-    "react-responsive-carousel": "^3.2.23",
-    "react-router-dom": "^6.22.3",
-    "react-spinners": "^0.13.8"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.55.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "react-script": "^2.0.5",
-    "react-scripts": "^5.0.1",
-    "vite": "^5.0.8"
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.0",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "wait-on": "^7.0.1",
+    "nodemon": "^3.1.0"
+  },
+  "build": {
+    "appId": "com.ancedric.openstorm",
+    "files": [
+      "frontend/dist/**/*",
+      "backend/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "arch": ["armv7l", "arm64"]
+    }
   }
 }
